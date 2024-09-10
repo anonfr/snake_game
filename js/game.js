@@ -96,8 +96,25 @@ function checkCollision() {
 
 function gameOver() {
     isGameOver = true;
-    playSound(gameOverSound);  // Play game over sound
+    console.log("Game Over function called");
+    playGameOverSound();
     document.getElementById('restartBtn').style.backgroundColor = '#ff0000';
+}
+
+function playGameOverSound() {
+    console.log("Attempting to play game over sound");
+    console.log("Game over sound ready state:", gameOverSound.readyState);
+    
+    gameOverSound.currentTime = 0;
+    let playPromise = gameOverSound.play();
+    
+    if (playPromise !== undefined) {
+        playPromise.then(() => {
+            console.log("Game over sound played successfully");
+        }).catch(error => {
+            console.error("Game over sound playback failed:", error);
+        });
+    }
 }
 
 function drawGameOver() {
@@ -232,35 +249,21 @@ function playSound(sound) {
 
 // Add this function to initialize audio context on user interaction
 function initAudio() {
-    // Create an audio context
-    const AudioContext = window.AudioContext || window.webkitAudioContext;
-    const audioCtx = new AudioContext();
+    console.log("Initializing audio");
+    gameOverSound.load();
     
-    // Resume the audio context if it's suspended (this helps on some mobile browsers)
-    if (audioCtx.state === 'suspended') {
-        audioCtx.resume();
-    }
+    // Try to play and immediately pause to enable audio on mobile
+    gameOverSound.play().then(() => {
+        gameOverSound.pause();
+        gameOverSound.currentTime = 0;
+        console.log("Audio initialized successfully");
+    }).catch(error => {
+        console.log("Audio initialization failed:", error);
+    });
 }
 
-// Add event listeners to initialize audio on user interaction
+// Call this function when the game starts or on first user interaction
 document.addEventListener('click', initAudio, { once: true });
 document.addEventListener('touchstart', initAudio, { once: true });
 
-// Add this function to preload sounds
-function preloadSounds() {
-    eatSound.load();
-    gameOverSound.load();
-    nightModeSound.load();
-}
-
-// Call preloadSounds at the end of the file
-preloadSounds();
-
-// Add this to ensure audio can play on mobile
-document.body.addEventListener('touchstart', function() {
-    nightModeSound.play().then(() => {
-        nightModeSound.pause();
-        nightModeSound.currentTime = 0;
-    }).catch(error => console.log("Audio play failed:", error));
-}, { once: true });
-
+// Remove or comment out the preloadSounds function if it's not needed elsewhere

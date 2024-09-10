@@ -70,22 +70,27 @@ body.night-mode canvas {
     margin-top: 20px;
 }
 
-#mobileControls button {
+.control-btn {
     font-size: 24px;
     width: 60px;
     height: 60px;
-    margin: 5px;
+    margin: 10px;
     border-radius: 50%;
     background-color: #ff0000;
     color: white;
     border: none;
     cursor: pointer;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .horizontal-controls {
     display: flex;
     justify-content: center;
     width: 100%;
+    gap: 40px;  /* Adds space between left and right buttons */
 }
 
 @media (max-width: 600px) {
@@ -94,11 +99,12 @@ body.night-mode canvas {
     }
     
     #gameControls {
-        flex-direction: column;
-        align-items: center;
+        flex-direction: row;
+        justify-content: center;
+        flex-wrap: wrap;
     }
     
     #gameControls button {
-        margin: 5px 0;
+        margin: 5px;
     }
 }
