@@ -45,7 +45,8 @@ body.night-mode canvas {
 
 #mobileControls {
     display: none;
-    justify-content: center;
+    flex-direction: column;
+    align-items: center;
     margin-top: 20px;
 }
 
@@ -54,58 +55,17 @@ body.night-mode canvas {
     width: 60px;
     height: 60px;
     margin: 5px;
-}
-
-#gameControls {
-    margin-top: 20px;
-}
-
-button {
-    font-size: 16px;
-    padding: 10px 20px;
-    margin: 0 10px;
+    border-radius: 50%;
     background-color: #ff0000;
     color: white;
     border: none;
-    border-radius: 5px;
     cursor: pointer;
-    transition: background-color 0.3s;
 }
 
-button:hover {
-    background-color: #ff0000;
-}
-
-body.night-mode button {
-    background-color: #ff0000;
-}
-
-body.night-mode button:hover {
-    background-color: #ff0000;
-}
-
-.dev-info {
-    margin-bottom: 10px;
-    font-size: 14px;
-}
-
-.dev-info a {
-    color: #f80000;
-    text-decoration: none;
-}
-
-.dev-info a:hover {
-    text-decoration: underline;
-}
-
-#score {
-    font-size: 24px;
-    margin-bottom: 20px;
-    color: #333;
-}
-
-body.night-mode #score {
-    color: #f0f0f0;
+.horizontal-controls {
+    display: flex;
+    justify-content: center;
+    width: 100%;
 }
 
 @media (max-width: 600px) {
