@@ -9,17 +9,25 @@
 <body>
     <div class="game-container">
         <h1>Anon Snake Game</h1>
-        <p>Note: This game only works on PC due to keyboard controls.</p>
-        <p>If you're on a smartphone, say hi to me on Telegram: <br>
+        <p class="note">Note: This game only works on PC due to keyboard controls.</p>
+        <p class="mobile-note">If you're on a smartphone, say hi to me on Telegram:<br>
         <a href="https://t.me/AnonfrXBT" target="_blank">@AnonfrXBT</a></p>
-        <canvas id="gameCanvas"></canvas>
-        <div id="gameControls">
-            <button id="pauseBtn">Pause</button>
-            <button id="restartBtn">Restart</button>
-            <button id="nightModeBtn">Night Mode</button>
+        <div id="pc-content">
+            <canvas id="gameCanvas"></canvas>
+            <div id="gameControls">
+                <button id="pauseBtn">Pause</button>
+                <button id="restartBtn">Restart</button>
+                <button id="nightModeBtn">Night Mode</button>
+            </div>
+            <div id="score">Score: <span id="scoreValue">0</span></div>
         </div>
-        <div id="score">Score: <span id="scoreValue">0</span></div>
     </div>
     <script src="js/game.js"></script>
+    <script>
+        // Check if the user is on a mobile device
+        if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+            document.getElementById('pc-content').style.display = 'none';
+        }
+    </script>
 </body>
 </html>
