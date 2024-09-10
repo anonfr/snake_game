@@ -3,7 +3,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    min-height: 100vh;
     margin: 0;
     background-color: #f0f0f0;
     color: #333;
@@ -19,14 +19,17 @@ body.night-mode {
     text-align: center;
     max-width: 100%;
     padding: 20px;
+    box-sizing: border-box;
 }
 
 h1 {
     margin-bottom: 10px;
+    font-size: 24px;
 }
 
 .dev-info {
     margin-bottom: 10px;
+    font-size: 14px;
 }
 
 .dev-info a {
@@ -35,17 +38,17 @@ h1 {
 }
 
 #score {
-    font-size: 24px;
-    margin-bottom: 20px;
+    font-size: 18px;
+    margin-bottom: 10px;
 }
 
 canvas {
-    border: 10px solid #000000;
+    border: 5px solid #000000;
     border-radius: 5px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     max-width: 100%;
     height: auto;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
 }
 
 body.night-mode canvas {
@@ -53,9 +56,9 @@ body.night-mode canvas {
 }
 
 #gameControls button {
-    font-size: 16px;
-    padding: 10px 20px;
-    margin: 0 5px;
+    font-size: 14px;
+    padding: 8px 16px;
+    margin: 0 5px 5px;
     background-color: #ff0000;
     color: white;
     border: none;
@@ -65,46 +68,63 @@ body.night-mode canvas {
 
 #mobileControls {
     display: none;
-    flex-direction: column;
-    align-items: center;
-    margin-top: 20px;
-}
-
-.control-btn {
-    font-size: 24px;
-    width: 60px;
-    height: 60px;
-    margin: 10px;
-    border-radius: 50%;
-    background-color: #ff0000;
-    color: white;
-    border: none;
-    cursor: pointer;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.horizontal-controls {
-    display: flex;
-    justify-content: center;
-    width: 100%;
-    gap: 40px;  /* Adds space between left and right buttons */
 }
 
 @media (max-width: 600px) {
+    body {
+        align-items: flex-start;
+        padding-top: 20px;
+    }
+
+    .game-container {
+        padding: 10px;
+    }
+
+    h1 {
+        font-size: 20px;
+        margin-bottom: 5px;
+    }
+
+    .dev-info, #score {
+        font-size: 12px;
+        margin-bottom: 5px;
+    }
+
+    canvas {
+        border-width: 3px;
+    }
+
+    #gameControls button {
+        font-size: 12px;
+        padding: 6px 12px;
+    }
+
     #mobileControls {
         display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-top: 10px;
     }
-    
-    #gameControls {
-        flex-direction: row;
-        justify-content: center;
-        flex-wrap: wrap;
-    }
-    
-    #gameControls button {
+
+    .control-btn {
+        font-size: 20px;
+        width: 50px;
+        height: 50px;
         margin: 5px;
+        border-radius: 50%;
+        background-color: #ff0000;
+        color: white;
+        border: none;
+        cursor: pointer;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .horizontal-controls {
+        display: flex;
+        justify-content: center;
+        width: 100%;
+        gap: 20px;
     }
 }
