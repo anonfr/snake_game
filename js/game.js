@@ -17,8 +17,9 @@ const nightModeSound = new Audio('sounds/night_mode.mp3');
 const bigBallSound = new Audio('sounds/big_ball.mp3'); // Add a new sound for the big ball
 
 function initGame() {
-    canvas.width = 400;
-    canvas.height = 400;
+    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    canvas.width = isMobile ? 300 : 400;
+    canvas.height = isMobile ? 300 : 400;
     tileCount = canvas.width / gridSize;
     resetGame();
     drawGame();
@@ -241,6 +242,52 @@ function handleCanvasClick(event) {
         }
     }
 }
+
+function handleMobileControl(direction) {
+    if (isGameOver) return;
+
+    switch (direction) {
+        case 'up':
+            if (dy !== 1) { dx = 0; dy = -1; }
+            break;
+        case 'down':
+            if (dy !== -1) { dx = 0; dy = 1; }
+            break;
+        case 'left':
+            if (dx !== 1) { dx = -1; dy = 0; }
+            break;
+        case 'right':
+            if (dx !== -1) { dx = 1; dy = 0; }
+            break;
+    }
+}
+
+document.getElementById('upBtn').addEventListener('click', () => handleMobileControl('up'));
+document.getElementById('downBtn').addEventListener('click', () => handleMobileControl('down'));
+document.getElementById('leftBtn').addEventListener('click', () => handleMobileControl('left'));
+document.getElementById('rightBtn').addEventListener('click', () => handleMobileControl('right'));
+
+// Add touch event listeners for swipe controls
+let touchStartX = 0;
+let touchStartY = 0;
+
+canvas.addEventListener('touchstart', (e) => {
+    touchStartX = e.changedTouches[0].screenX;
+    touchStartY = e.changedTouches[0].screenY;
+});
+
+canvas.addEventListener('touchend', (e) => {
+    const touchEndX = e.changedTouches[0].screenX;
+    const touchEndY = e.changedTouches[0].screenY;
+    const dx = touchEndX - touchStartX;
+    const dy = touchEndY - touchStartY;
+
+    if (Math.abs(dx) > Math.abs(dy)) {
+        handleMobileControl(dx > 0 ? 'right' : 'left');
+    } else {
+        handleMobileControl(dy > 0 ? 'down' : 'up');
+    }
+});
 
 document.addEventListener('keydown', changeDirection);
 document.getElementById('pauseBtn').addEventListener('click', togglePause);
