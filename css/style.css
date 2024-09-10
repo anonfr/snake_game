@@ -9,46 +9,48 @@ body {
     transition: background-color 0.3s, color 0.3s;
 }
 
+body.night-mode {
+    background-color: #222;
+    color: #f0f0f0;
+}
+
 .game-container {
     text-align: center;
-    background-color: white;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
-    max-width: 90%;
 }
 
 h1 {
     color: #333;
-    margin-bottom: 10px;
+    margin-bottom: 20px;
 }
 
-.note, .mobile-note {
-    color: #666;
-    margin-bottom: 15px;
+body.night-mode h1 {
+    color: #f0f0f0;
 }
 
-#gameCanvas {
-    border: 2px solid #333;
+canvas {
+    border: 10px solid #000000;
     border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+body.night-mode canvas {
+    border: 10px solid #000;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
 }
 
 #gameControls {
-    margin-top: 15px;
+    margin-top: 20px;
 }
 
 button {
-    background-color: #4CAF50;
-    border: none;
-    color: white;
-    padding: 10px 20px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
     font-size: 16px;
-    margin: 4px 2px;
-    cursor: pointer;
+    padding: 10px 20px;
+    margin: 0 10px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
     border-radius: 5px;
+    cursor: pointer;
     transition: background-color 0.3s;
 }
 
@@ -65,30 +67,11 @@ body.night-mode button:hover {
 }
 
 #score {
-    margin-top: 15px;
-    font-size: 18px;
-    font-weight: bold;
+    font-size: 24px;
+    margin-top: 20px;
+    color: #333;
 }
 
 body.night-mode #score {
     color: #f0f0f0;
-}
-
-@media (max-width: 600px) {
-    .game-container {
-        padding: 10px;
-    }
-    
-    h1 {
-        font-size: 24px;
-    }
-    
-    .note, .mobile-note {
-        font-size: 14px;
-    }
-    
-    button {
-        padding: 8px 16px;
-        font-size: 14px;
-    }
 }
