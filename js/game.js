@@ -9,6 +9,7 @@ let isNightMode = false;
 // Add these at the top of your file
 const eatSound = new Audio('sounds/eat.mp3');
 const gameOverSound = new Audio('sounds/game_over.mp3');
+const nightModeSound = new Audio('sounds/night_mode.mp3');
 
 function initGame() {
     canvas.width = 400;
@@ -152,6 +153,7 @@ function toggleNightMode() {
     isNightMode = !isNightMode;
     document.body.classList.toggle('night-mode');
     document.getElementById('nightModeBtn').textContent = isNightMode ? 'Day Mode' : 'Night Mode';
+    playSound(nightModeSound);
 }
 
 document.addEventListener('keydown', changeDirection);
@@ -214,11 +216,17 @@ initGame();
 
 // Add a function to play sounds
 function playSound(sound) {
-    if (sound.readyState === 4) { // HAVE_ENOUGH_DATA - safe to play audio
+    if (sound.readyState >= 2) {  // HAVE_CURRENT_DATA or higher
         sound.currentTime = 0;
         sound.play().catch(error => {
             console.log("Playback prevented:", error);
         });
+    } else {
+        sound.addEventListener('canplaythrough', () => {
+            sound.play().catch(error => {
+                console.log("Playback prevented:", error);
+            });
+        }, { once: true });
     }
 }
 
@@ -242,7 +250,17 @@ document.addEventListener('touchstart', initAudio, { once: true });
 function preloadSounds() {
     eatSound.load();
     gameOverSound.load();
+    nightModeSound.load();
 }
 
 // Call preloadSounds at the end of the file
 preloadSounds();
+
+// Add this to ensure audio can play on mobile
+document.body.addEventListener('touchstart', function() {
+    nightModeSound.play().then(() => {
+        nightModeSound.pause();
+        nightModeSound.currentTime = 0;
+    }).catch(error => console.log("Audio play failed:", error));
+}, { once: true });
+
