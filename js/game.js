@@ -6,6 +6,10 @@ let tileCount;
 let snake, food, dx, dy, gameLoop, isPaused, score, isGameOver;
 let isNightMode = false;
 
+// Add these at the top of your file
+const eatSound = new Audio('sounds/eat.mp3');
+const gameOverSound = new Audio('sounds/game_over.mp3');
+
 function initGame() {
     canvas.width = 400;
     canvas.height = 400;
@@ -53,6 +57,7 @@ function moveSnake() {
         generateFood();
         score++;
         updateScore();
+        eatSound.play();  // Play sound when eating
     } else {
         snake.pop();
     }
@@ -90,6 +95,7 @@ function checkCollision() {
 
 function gameOver() {
     isGameOver = true;
+    gameOverSound.play();  // Play sound on game over
     document.getElementById('restartBtn').style.backgroundColor = '#ff0000';
 }
 
@@ -158,11 +164,14 @@ document.getElementById('downBtn').addEventListener('click', () => handleMobileC
 document.getElementById('leftBtn').addEventListener('click', () => handleMobileControl('left'));
 document.getElementById('rightBtn').addEventListener('click', () => handleMobileControl('right'));
 
+// Modify the canvas click event listener
 canvas.addEventListener('click', function(event) {
     if (isGameOver) {
         const rect = canvas.getBoundingClientRect();
-        const x = event.clientX - rect.left;
-        const y = event.clientY - rect.top;
+        const scaleX = canvas.width / rect.width;
+        const scaleY = canvas.height / rect.height;
+        const x = (event.clientX - rect.left) * scaleX;
+        const y = (event.clientY - rect.top) * scaleY;
         
         // Check if click is within the restart button area
         if (x > canvas.width / 2 - 50 && x < canvas.width / 2 + 50 &&
