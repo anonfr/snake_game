@@ -57,7 +57,7 @@ function moveSnake() {
         generateFood();
         score++;
         updateScore();
-        eatSound.play();  // Play sound when eating
+        playSound(eatSound);  // Play eat sound
     } else {
         snake.pop();
     }
@@ -95,7 +95,7 @@ function checkCollision() {
 
 function gameOver() {
     isGameOver = true;
-    gameOverSound.play();  // Play sound on game over
+    playSound(gameOverSound);  // Play game over sound
     document.getElementById('restartBtn').style.backgroundColor = '#ff0000';
 }
 
@@ -211,3 +211,37 @@ function resetGame() {
 
 // Make sure initGame is called at the end of the file
 initGame();
+
+// Add a function to play sounds
+function playSound(sound) {
+    // Reset the sound to the beginning
+    sound.currentTime = 0;
+    // Create a promise to play the sound
+    let playPromise = sound.play();
+    
+    if (playPromise !== undefined) {
+        playPromise.then(_ => {
+            // Playback started successfully
+        })
+        .catch(error => {
+            // Auto-play was prevented
+            console.log("Playback prevented:", error);
+        });
+    }
+}
+
+// Add this function to initialize audio context on user interaction
+function initAudio() {
+    // Create an audio context
+    const AudioContext = window.AudioContext || window.webkitAudioContext;
+    const audioCtx = new AudioContext();
+    
+    // Resume the audio context if it's suspended (this helps on some mobile browsers)
+    if (audioCtx.state === 'suspended') {
+        audioCtx.resume();
+    }
+}
+
+// Add event listeners to initialize audio on user interaction
+document.addEventListener('click', initAudio, { once: true });
+document.addEventListener('touchstart', initAudio, { once: true });
