@@ -164,21 +164,50 @@ document.getElementById('downBtn').addEventListener('click', () => handleMobileC
 document.getElementById('leftBtn').addEventListener('click', () => handleMobileControl('left'));
 document.getElementById('rightBtn').addEventListener('click', () => handleMobileControl('right'));
 
-// Modify the canvas click event listener
-canvas.addEventListener('click', function(event) {
+// Add these functions to handle both click and touch events
+function handleCanvasClick(event) {
     if (isGameOver) {
         const rect = canvas.getBoundingClientRect();
         const scaleX = canvas.width / rect.width;
         const scaleY = canvas.height / rect.height;
-        const x = (event.clientX - rect.left) * scaleX;
-        const y = (event.clientY - rect.top) * scaleY;
+        let x, y;
+
+        if (event.type === 'touchstart') {
+            x = (event.touches[0].clientX - rect.left) * scaleX;
+            y = (event.touches[0].clientY - rect.top) * scaleY;
+        } else {
+            x = (event.clientX - rect.left) * scaleX;
+            y = (event.clientY - rect.top) * scaleY;
+        }
         
-        // Check if click is within the restart button area
+        // Check if click/touch is within the restart button area
         if (x > canvas.width / 2 - 50 && x < canvas.width / 2 + 50 &&
             y > canvas.height / 2 + 30 && y < canvas.height / 2 + 70) {
             resetGame();
         }
     }
-});
+}
 
+// Add event listeners for both click and touch events
+canvas.addEventListener('click', handleCanvasClick);
+canvas.addEventListener('touchstart', handleCanvasClick);
+
+// Prevent default touch behavior to avoid scrolling
+canvas.addEventListener('touchstart', function(e) {
+    e.preventDefault();
+}, { passive: false });
+
+// Modify the resetGame function
+function resetGame() {
+    snake = [{ x: 10, y: 10 }];
+    generateFood();
+    dx = 0;
+    dy = 0;
+    isPaused = false;
+    isGameOver = false;
+    score = 0;
+    updateScore();
+}
+
+// Make sure initGame is called at the end of the file
 initGame();
