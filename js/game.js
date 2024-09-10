@@ -4,7 +4,7 @@ const ctx = canvas.getContext('2d');
 const gridSize = 20;
 let tileCount;
 let snake, food, dx, dy, gameLoop, isPaused, score, isGameOver;
-let isNightMode = false;
+let isNightMode = true;  // Set this to true by default;
 
 // Add these at the top of your file
 const eatSound = new Audio('sounds/eat.mp3');
@@ -17,6 +17,7 @@ function initGame() {
     tileCount = canvas.width / gridSize;
     resetGame();
     drawGame();
+    applyNightMode();  // Apply night mode on init
 }
 
 function resetGame() {
@@ -171,6 +172,17 @@ function toggleNightMode() {
     document.body.classList.toggle('night-mode');
     document.getElementById('nightModeBtn').textContent = isNightMode ? 'Day Mode' : 'Night Mode';
     playSound(nightModeSound);
+    applyNightMode();  // Apply night mode changes
+}
+
+function applyNightMode() {
+    if (isNightMode) {
+        document.body.classList.add('night-mode');
+        document.getElementById('nightModeBtn').textContent = 'Day Mode';
+    } else {
+        document.body.classList.remove('night-mode');
+        document.getElementById('nightModeBtn').textContent = 'Night Mode';
+    }
 }
 
 document.addEventListener('keydown', changeDirection);
@@ -265,5 +277,3 @@ function initAudio() {
 // Call this function when the game starts or on first user interaction
 document.addEventListener('click', initAudio, { once: true });
 document.addEventListener('touchstart', initAudio, { once: true });
-
-// Remove or comment out the preloadSounds function if it's not needed elsewhere
