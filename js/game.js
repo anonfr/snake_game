@@ -5,21 +5,10 @@ const gridSize = 20;
 let tileCount;
 let snake, food, dx, dy, gameLoop, isPaused, score, isGameOver;
 let isNightMode = false;
-let bigBall = null;
-let bigBallTimer = null;
-const bigBallDuration = 5000; // 5 seconds
-const bigBallMaxPoints = 50;
-
-// Add sound effects
-const eatSound = new Audio('sounds/eat.mp3');
-const gameOverSound = new Audio('sounds/game_over.mp3');
-const nightModeSound = new Audio('sounds/night_mode.mp3');
-const bigBallSound = new Audio('sounds/big_ball.mp3'); // Add a new sound for the big ball
 
 function initGame() {
-    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-    canvas.width = isMobile ? 300 : 400;
-    canvas.height = isMobile ? 300 : 400;
+    canvas.width = 400;
+    canvas.height = 400;
     tileCount = canvas.width / gridSize;
     resetGame();
     drawGame();
@@ -34,10 +23,7 @@ function resetGame() {
     isGameOver = false;
     score = 0;
     updateScore();
-    updatePauseButton();
-    clearTimeout(bigBallTimer);
-    bigBall = null;
-    scheduleBigBall();
+    document.getElementById('restartBtn').style.backgroundColor = ''; // Reset button color
 }
 
 function drawGame() {
@@ -49,9 +35,6 @@ function drawGame() {
         }
         drawSnake();
         drawFood();
-        if (bigBall) {
-            drawBigBall();
-        }
     } else {
         drawGameOver();
     }
@@ -70,43 +53,21 @@ function moveSnake() {
         generateFood();
         score++;
         updateScore();
-        eatSound.play();
-    } else if (bigBall && head.x === bigBall.x && head.y === bigBall.y) {
-        const timeElapsed = Date.now() - bigBall.startTime;
-        const pointsEarned = Math.max(1, Math.floor(bigBallMaxPoints * (1 - timeElapsed / bigBallDuration)));
-        score += pointsEarned;
-        updateScore();
-        bigBallSound.play();
-        bigBall = null;
-        clearTimeout(bigBallTimer);
-        scheduleBigBall();
     } else {
         snake.pop();
     }
 }
 
 function drawSnake() {
-    snake.forEach((segment, index) => {
-        const hue = (index * 15) % 360;
-        ctx.fillStyle = `hsl(${hue}, 100%, ${isNightMode ? '70%' : '50%'})`;
+    ctx.fillStyle = isNightMode ? '#00ff00' : '#008000';
+    snake.forEach(segment => {
         ctx.fillRect(segment.x * gridSize, segment.y * gridSize, gridSize - 2, gridSize - 2);
     });
 }
 
 function drawFood() {
     ctx.fillStyle = isNightMode ? '#ff6b6b' : 'red';
-    ctx.beginPath();
-    ctx.arc((food.x + 0.5) * gridSize, (food.y + 0.5) * gridSize, gridSize / 2 - 2, 0, Math.PI * 2);
-    ctx.fill();
-}
-
-function drawBigBall() {
-    const timeElapsed = Date.now() - bigBall.startTime;
-    const opacity = 1 - timeElapsed / bigBallDuration;
-    ctx.fillStyle = `rgba(255, 215, 0, ${opacity})`; // Golden color with fading opacity
-    ctx.beginPath();
-    ctx.arc((bigBall.x + 0.5) * gridSize, (bigBall.y + 0.5) * gridSize, gridSize - 2, 0, Math.PI * 2);
-    ctx.fill();
+    ctx.fillRect(food.x * gridSize, food.y * gridSize, gridSize - 2, gridSize - 2);
 }
 
 function generateFood() {
@@ -114,23 +75,6 @@ function generateFood() {
         x: Math.floor(Math.random() * tileCount),
         y: Math.floor(Math.random() * tileCount)
     };
-}
-
-function generateBigBall() {
-    bigBall = {
-        x: Math.floor(Math.random() * tileCount),
-        y: Math.floor(Math.random() * tileCount),
-        startTime: Date.now()
-    };
-    bigBallTimer = setTimeout(() => {
-        bigBall = null;
-        scheduleBigBall();
-    }, bigBallDuration);
-}
-
-function scheduleBigBall() {
-    const delay = Math.random() * 10000 + 5000; // Random delay between 5-15 seconds
-    setTimeout(generateBigBall, delay);
 }
 
 function checkCollision() {
@@ -146,7 +90,7 @@ function checkCollision() {
 
 function gameOver() {
     isGameOver = true;
-    gameOverSound.play();
+    document.getElementById('restartBtn').style.backgroundColor = '#ff0000';
 }
 
 function drawGameOver() {
@@ -156,9 +100,10 @@ function drawGameOver() {
     ctx.fillText('Game Over', canvas.width / 2, canvas.height / 2 - 30);
     ctx.fillText(`Score: ${score}`, canvas.width / 2, canvas.height / 2 + 10);
 
-    ctx.fillStyle = '#4CAF50';
+    // Draw a red restart button
+    ctx.fillStyle = '#ff0000';  // Change this to red
     ctx.fillRect(canvas.width / 2 - 50, canvas.height / 2 + 30, 100, 40);
-    ctx.fillStyle = 'white';
+    ctx.fillStyle = '#ffffff';  // White text
     ctx.font = '20px Arial';
     ctx.fillText('Restart', canvas.width / 2, canvas.height / 2 + 55);
 }
@@ -168,131 +113,63 @@ function updateScore() {
 }
 
 function changeDirection(event) {
-    if (isGameOver) return;
-
-    const LEFT_KEY = 37;
-    const RIGHT_KEY = 39;
-    const UP_KEY = 38;
-    const DOWN_KEY = 40;
-    const SPACE_KEY = 32;
-    const ENTER_KEY = 13;
-
     const keyPressed = event.keyCode;
     const goingUp = dy === -1;
     const goingDown = dy === 1;
     const goingRight = dx === 1;
     const goingLeft = dx === -1;
 
-    if (keyPressed === LEFT_KEY && !goingRight) {
-        dx = -1;
-        dy = 0;
-    }
-    if (keyPressed === UP_KEY && !goingDown) {
-        dx = 0;
-        dy = -1;
-    }
-    if (keyPressed === RIGHT_KEY && !goingLeft) {
-        dx = 1;
-        dy = 0;
-    }
-    if (keyPressed === DOWN_KEY && !goingUp) {
-        dx = 0;
-        dy = 1;
-    }
-    if (keyPressed === SPACE_KEY || keyPressed === ENTER_KEY) {
-        togglePause();
-    }
+    if (keyPressed === 37 && !goingRight) { dx = -1; dy = 0; }
+    if (keyPressed === 38 && !goingDown) { dx = 0; dy = -1; }
+    if (keyPressed === 39 && !goingLeft) { dx = 1; dy = 0; }
+    if (keyPressed === 40 && !goingUp) { dx = 0; dy = 1; }
+}
+
+function handleMobileControl(direction) {
+    const goingUp = dy === -1;
+    const goingDown = dy === 1;
+    const goingRight = dx === 1;
+    const goingLeft = dx === -1;
+
+    if (direction === 'left' && !goingRight) { dx = -1; dy = 0; }
+    if (direction === 'up' && !goingDown) { dx = 0; dy = -1; }
+    if (direction === 'right' && !goingLeft) { dx = 1; dy = 0; }
+    if (direction === 'down' && !goingUp) { dx = 0; dy = 1; }
 }
 
 function togglePause() {
-    if (!isGameOver) {
-        isPaused = !isPaused;
-        updatePauseButton();
-    }
-}
-
-function updatePauseButton() {
+    isPaused = !isPaused;
     document.getElementById('pauseBtn').textContent = isPaused ? 'Resume' : 'Pause';
-}
-
-function restartGame() {
-    resetGame();
 }
 
 function toggleNightMode() {
     isNightMode = !isNightMode;
     document.body.classList.toggle('night-mode');
     document.getElementById('nightModeBtn').textContent = isNightMode ? 'Day Mode' : 'Night Mode';
-    
-    // Update canvas border
-    canvas.style.borderColor = isNightMode ? '#000' : '#8B4513';
-    
-    nightModeSound.play();
 }
 
-function handleCanvasClick(event) {
-    if (isGameOver) {
-        const rect = canvas.getBoundingClientRect();
-        const x = event.clientX - rect.left;
-        const y = event.clientY - rect.top;
-        
-        if (x >= canvas.width / 2 - 50 && x <= canvas.width / 2 + 50 &&
-            y >= canvas.height / 2 + 30 && y <= canvas.height / 2 + 70) {
-            restartGame();
-        }
-    }
-}
-
-function handleMobileControl(direction) {
-    if (isGameOver) return;
-
-    switch (direction) {
-        case 'up':
-            if (dy !== 1) { dx = 0; dy = -1; }
-            break;
-        case 'down':
-            if (dy !== -1) { dx = 0; dy = 1; }
-            break;
-        case 'left':
-            if (dx !== 1) { dx = -1; dy = 0; }
-            break;
-        case 'right':
-            if (dx !== -1) { dx = 1; dy = 0; }
-            break;
-    }
-}
+document.addEventListener('keydown', changeDirection);
+document.getElementById('pauseBtn').addEventListener('click', togglePause);
+document.getElementById('restartBtn').addEventListener('click', resetGame);
+document.getElementById('nightModeBtn').addEventListener('click', toggleNightMode);
 
 document.getElementById('upBtn').addEventListener('click', () => handleMobileControl('up'));
 document.getElementById('downBtn').addEventListener('click', () => handleMobileControl('down'));
 document.getElementById('leftBtn').addEventListener('click', () => handleMobileControl('left'));
 document.getElementById('rightBtn').addEventListener('click', () => handleMobileControl('right'));
 
-// Add touch event listeners for swipe controls
-let touchStartX = 0;
-let touchStartY = 0;
-
-canvas.addEventListener('touchstart', (e) => {
-    touchStartX = e.changedTouches[0].screenX;
-    touchStartY = e.changedTouches[0].screenY;
-});
-
-canvas.addEventListener('touchend', (e) => {
-    const touchEndX = e.changedTouches[0].screenX;
-    const touchEndY = e.changedTouches[0].screenY;
-    const dx = touchEndX - touchStartX;
-    const dy = touchEndY - touchStartY;
-
-    if (Math.abs(dx) > Math.abs(dy)) {
-        handleMobileControl(dx > 0 ? 'right' : 'left');
-    } else {
-        handleMobileControl(dy > 0 ? 'down' : 'up');
+canvas.addEventListener('click', function(event) {
+    if (isGameOver) {
+        const rect = canvas.getBoundingClientRect();
+        const x = event.clientX - rect.left;
+        const y = event.clientY - rect.top;
+        
+        // Check if click is within the restart button area
+        if (x > canvas.width / 2 - 50 && x < canvas.width / 2 + 50 &&
+            y > canvas.height / 2 + 30 && y < canvas.height / 2 + 70) {
+            resetGame();
+        }
     }
 });
-
-document.addEventListener('keydown', changeDirection);
-document.getElementById('pauseBtn').addEventListener('click', togglePause);
-document.getElementById('restartBtn').addEventListener('click', restartGame);
-document.getElementById('nightModeBtn').addEventListener('click', toggleNightMode);
-canvas.addEventListener('click', handleCanvasClick);
 
 initGame();
