@@ -6,11 +6,12 @@ body {
     height: 100vh;
     margin: 0;
     background-color: #f0f0f0;
+    color: #333;
     transition: background-color 0.3s, color 0.3s;
 }
 
 body.night-mode {
-    background-color: #222;
+    background-color: #000000;
     color: #f0f0f0;
 }
 
@@ -21,12 +22,21 @@ body.night-mode {
 }
 
 h1 {
-    color: #333;
     margin-bottom: 10px;
 }
 
-body.night-mode h1 {
-    color: #f0f0f0;
+.dev-info {
+    margin-bottom: 10px;
+}
+
+.dev-info a {
+    color: #ff0000;
+    text-decoration: none;
+}
+
+#score {
+    font-size: 24px;
+    margin-bottom: 20px;
 }
 
 canvas {
@@ -39,8 +49,18 @@ canvas {
 }
 
 body.night-mode canvas {
-    border: 10px solid #000;
-    box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+    border-color: #ffffff;
+}
+
+#gameControls button {
+    font-size: 16px;
+    padding: 10px 20px;
+    margin: 0 5px;
+    background-color: #ff0000;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
 }
 
 #mobileControls {

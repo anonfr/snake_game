@@ -46,7 +46,7 @@ function drawGame() {
 }
 
 function clearCanvas() {
-    ctx.fillStyle = isNightMode ? '#222' : '#f0f0f0';
+    ctx.fillStyle = isNightMode ? '#000000' : '#f0f0f0';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 }
 
@@ -71,7 +71,7 @@ function drawSnake() {
 }
 
 function drawFood() {
-    ctx.fillStyle = isNightMode ? '#ff6b6b' : 'red';
+    ctx.fillStyle = isNightMode ? '#ff6b6b' : '#ff0000';
     ctx.fillRect(food.x * gridSize, food.y * gridSize, gridSize - 2, gridSize - 2);
 }
 
@@ -214,17 +214,9 @@ initGame();
 
 // Add a function to play sounds
 function playSound(sound) {
-    // Reset the sound to the beginning
-    sound.currentTime = 0;
-    // Create a promise to play the sound
-    let playPromise = sound.play();
-    
-    if (playPromise !== undefined) {
-        playPromise.then(_ => {
-            // Playback started successfully
-        })
-        .catch(error => {
-            // Auto-play was prevented
+    if (sound.readyState === 4) { // HAVE_ENOUGH_DATA - safe to play audio
+        sound.currentTime = 0;
+        sound.play().catch(error => {
             console.log("Playback prevented:", error);
         });
     }
@@ -245,3 +237,12 @@ function initAudio() {
 // Add event listeners to initialize audio on user interaction
 document.addEventListener('click', initAudio, { once: true });
 document.addEventListener('touchstart', initAudio, { once: true });
+
+// Add this function to preload sounds
+function preloadSounds() {
+    eatSound.load();
+    gameOverSound.load();
+}
+
+// Call preloadSounds at the end of the file
+preloadSounds();
