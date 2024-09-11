@@ -68,6 +68,8 @@ body.night-mode canvas {
 
 #mobileControls {
     display: none;
+    width: 180px; /* Adjust this value to change the overall size of the control pad */
+    margin: 20px auto;
 }
 
 @media (max-width: 600px) {
@@ -80,16 +82,18 @@ body.night-mode canvas {
     }
 
     #mobileControls {
+        display: block;
+    }
+
+    .control-row {
         display: flex;
-        flex-direction: column;
-        align-items: center;
-        margin-top: 10px;
+        justify-content: center;
     }
 
     .control-btn {
-        font-size: 20px;
-        width: 50px;
-        height: 50px;
+        font-size: 24px;
+        width: 60px;
+        height: 60px;
         margin: 5px;
         border-radius: 50%;
         background-color: #ff0000;
@@ -101,17 +105,14 @@ body.night-mode canvas {
         align-items: center;
     }
 
-    .horizontal-controls {
-        display: flex;
+    /* Center the middle row buttons */
+    .control-row:nth-child(2) {
         justify-content: space-between;
-        width: 80%;
-        max-width: 250px;
-        margin: 5px auto;
     }
 
-    /* Specific styles for left and right buttons */
+    /* Adjust the size of left and right buttons to match the layout */
     #leftBtn, #rightBtn {
-        margin: 0 10px; /* Add some horizontal margin */
+        width: 60px;
     }
 
     /* Adjust vertical spacing */
