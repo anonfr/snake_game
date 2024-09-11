@@ -20,6 +20,7 @@ body.night-mode {
     max-width: 100%;
     padding: 20px;
     box-sizing: border-box;
+    padding-bottom: 100px; /* Adjust as needed */
 }
 
 h1 {
@@ -80,8 +81,8 @@ body.night-mode canvas {
 
     .control-btn {
         font-size: 20px;
-        width: 50px;
-        height: 50px;
+        width: 60px;  /* Increased from 50px */
+        height: 60px; /* Increased from 50px */
         margin: 5px;
         border-radius: 50%;
         background-color: #ff0000;
@@ -95,8 +96,19 @@ body.night-mode canvas {
 
     .horizontal-controls {
         display: flex;
-        justify-content: center;
+        justify-content: space-between; /* Changed from center */
         width: 100%;
-        gap: 20px;
+        max-width: 300px; /* Added to limit the width */
+        margin: 10px auto; /* Center the container */
+    }
+
+    /* Specific styles for left and right buttons */
+    #leftBtn, #rightBtn {
+        margin: 0 10px; /* Add some horizontal margin */
+    }
+
+    /* Adjust vertical spacing */
+    #upBtn, #downBtn {
+        margin: 10px 0;
     }
 }
