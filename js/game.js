@@ -190,6 +190,7 @@ document.getElementById('pauseBtn').addEventListener('click', togglePause);
 document.getElementById('restartBtn').addEventListener('click', resetGame);
 document.getElementById('nightModeBtn').addEventListener('click', toggleNightMode);
 
+// Mobile controls
 document.getElementById('upBtn').addEventListener('click', () => handleMobileControl('up'));
 document.getElementById('downBtn').addEventListener('click', () => handleMobileControl('down'));
 document.getElementById('leftBtn').addEventListener('click', () => handleMobileControl('left'));
@@ -277,5 +278,3 @@ function initAudio() {
 // Call this function when the game starts or on first user interaction
 document.addEventListener('click', initAudio, { once: true });
 document.addEventListener('touchstart', initAudio, { once: true });
-
-// Remove or comment out the preloadSounds function if it's not needed elsewhere

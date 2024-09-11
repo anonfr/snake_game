@@ -70,48 +70,12 @@ body.night-mode canvas {
     display: none;
 }
 
-#pcControls {
-    display: block;
-}
-
 @media (max-width: 600px) {
     #mobileControls {
         display: flex;
         flex-direction: column;
         align-items: center;
         margin-top: 10px;
-    }
-
-    #pcControls {
-        display: none;
-    }
-
-    body {
-        align-items: flex-start;
-        padding-top: 20px;
-    }
-
-    .game-container {
-        padding: 10px;
-    }
-
-    h1 {
-        font-size: 20px;
-        margin-bottom: 5px;
-    }
-
-    .dev-info, #score {
-        font-size: 12px;
-        margin-bottom: 5px;
-    }
-
-    canvas {
-        border-width: 3px;
-    }
-
-    #gameControls button {
-        font-size: 12px;
-        padding: 6px 12px;
     }
 
     .control-btn {
