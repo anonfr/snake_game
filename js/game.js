@@ -277,3 +277,5 @@ function initAudio() {
 // Call this function when the game starts or on first user interaction
 document.addEventListener('click', initAudio, { once: true });
 document.addEventListener('touchstart', initAudio, { once: true });
+
+// Remove or comment out the preloadSounds function if it's not needed elsewhere
