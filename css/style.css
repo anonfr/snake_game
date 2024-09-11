@@ -18,19 +18,18 @@ body.night-mode {
 .game-container {
     text-align: center;
     max-width: 100%;
-    padding: 20px;
+    padding: 10px;
     box-sizing: border-box;
-    padding-bottom: 100px; /* Adjust as needed */
 }
 
 h1 {
-    margin-bottom: 10px;
-    font-size: 24px;
+    margin-bottom: 5px;
+    font-size: 20px;
 }
 
 .dev-info {
-    margin-bottom: 10px;
-    font-size: 14px;
+    margin-bottom: 5px;
+    font-size: 12px;
 }
 
 .dev-info a {
@@ -39,12 +38,12 @@ h1 {
 }
 
 #score {
-    font-size: 18px;
-    margin-bottom: 10px;
+    font-size: 16px;
+    margin-bottom: 5px;
 }
 
 canvas {
-    border: 5px solid #000000;
+    border: 3px solid #000000;
     border-radius: 5px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     max-width: 100%;
@@ -72,6 +71,14 @@ body.night-mode canvas {
 }
 
 @media (max-width: 600px) {
+    .game-container {
+        padding: 5px;
+    }
+
+    canvas {
+        max-width: 90%;
+    }
+
     #mobileControls {
         display: flex;
         flex-direction: column;
@@ -81,8 +88,8 @@ body.night-mode canvas {
 
     .control-btn {
         font-size: 20px;
-        width: 60px;  /* Increased from 50px */
-        height: 60px; /* Increased from 50px */
+        width: 50px;
+        height: 50px;
         margin: 5px;
         border-radius: 50%;
         background-color: #ff0000;
@@ -96,10 +103,10 @@ body.night-mode canvas {
 
     .horizontal-controls {
         display: flex;
-        justify-content: space-between; /* Changed from center */
-        width: 100%;
-        max-width: 300px; /* Added to limit the width */
-        margin: 10px auto; /* Center the container */
+        justify-content: space-between;
+        width: 80%;
+        max-width: 250px;
+        margin: 5px auto;
     }
 
     /* Specific styles for left and right buttons */
@@ -109,6 +116,6 @@ body.night-mode canvas {
 
     /* Adjust vertical spacing */
     #upBtn, #downBtn {
-        margin: 10px 0;
+        margin: 5px 0;
     }
 }
